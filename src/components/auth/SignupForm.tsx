@@ -51,6 +51,15 @@ export default function SignupForm({ onSuccess }: { onSuccess?: () => void }) {
         confirmPassword: form.confirmPassword,
       };
       await api.post('/auth/signup', requestData);
+      // 회원가입 성공 시 이름을 임시로 저장
+      if (typeof window !== 'undefined') {
+        const authStorage = localStorage.getItem('auth-storage');
+        if (authStorage) {
+          const parsed = JSON.parse(authStorage);
+          parsed.state.name = form.name;
+          localStorage.setItem('auth-storage', JSON.stringify(parsed));
+        }
+      }
       onSuccess?.();
     } catch (err: any) {
       const errorMsg = err.response?.data?.message || '회원가입 실패';

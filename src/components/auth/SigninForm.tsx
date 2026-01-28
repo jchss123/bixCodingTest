@@ -20,7 +20,8 @@ export default function SigninForm({ onSuccess }: { onSuccess?: () => void }) {
         setError('로그인 실패: 응답이 올바르지 않습니다');
         return;
       }
-      setAuth({ ...res.data, username: form.username, name: res.data.name || form.username });
+      const currentName = useAuthStore.getState().name;
+      setAuth({ ...res.data, username: form.username, name: res.data.name || currentName || form.username });
       onSuccess?.();
     } catch (err: any) {
       const errorMsg = err.response?.data?.message || '아이디 또는 비밀번호가 올바른지 않습니다';
